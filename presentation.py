@@ -34,6 +34,7 @@ for x in first_degree_connected_nodes:
 second_degree_connected_nodes.remove(3437)
 second_degree_connected_nodes = list(set(second_degree_connected_nodes))
 subgraph_3437 = nx.subgraph(fb,first_degree_connected_nodes+second_degree_connected_nodes)
+betweennessCentrality = nx.betweenness_centrality(subgraph_3437, normalized=True, endpoints=True)
 # node_size = [1000 if v == 3437 else 35 for v in subgraph_3437]
 
 
@@ -49,7 +50,6 @@ def draw_origin():
 
 def draw_influence():
     pos = nx.spring_layout(subgraph_3437)
-    betweennessCentrality = nx.betweenness_centrality(subgraph_3437,normalized=True, endpoints=True)
     top_center = sorted([v for v in betweennessCentrality], key=lambda x: betweennessCentrality[x], reverse=True)
     node_color = ['yellow' if subgraph_3437.nodes[v]["type"] == "商户" else 'red' for v in subgraph_3437]
     # node_color = ['yellow' if v in top_center[:4] else 'red' for v in subgraph_3437]
@@ -61,14 +61,13 @@ def draw_influence():
     plt.show()
 
 
-def draw_community():
-    pass
-
-
-def candidate_list():
+def candidate_list(query):
+    candidates = [v for v in subgraph_3437 if query in subgraph_3437.nodes[v]["location"]]
+    ans = sorted(candidates, key= lambda x: betweennessCentrality[x], reverse=True)[0]
+    res = []
     for attr in attributes:
-        print(subgraph_3437.nodes[3437][attr])
+        res.append(subgraph_3437.nodes[ans][attr])
 
 
 if __name__ == '__main__':
-    candidate_list()
+    candidate_list("浦东新区")
