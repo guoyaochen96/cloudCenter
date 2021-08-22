@@ -29,6 +29,7 @@ class Cloud(QWidget):
         self.inputBtn.resize(self.inputBtn.sizeHint())
         self.inputBtn.move(10, 10)
 
+
         self.resize(350, 250)
         self.center()
         self.setWindowIcon(QtGui.QIcon("UnionPay.png"))
