@@ -63,10 +63,13 @@ def draw_influence():
 
 def candidate_list(query):
     candidates = [v for v in subgraph_3437 if query in subgraph_3437.nodes[v]["location"]]
+    if len(candidates) == 0:
+        return []
     ans = sorted(candidates, key= lambda x: betweennessCentrality[x], reverse=True)[0]
     res = []
     for attr in attributes:
         res.append(subgraph_3437.nodes[ans][attr])
+    return res
 
 
 if __name__ == '__main__':
