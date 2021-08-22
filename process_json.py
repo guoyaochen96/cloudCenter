@@ -2,6 +2,30 @@ import json
 import random
 
 
+def random_choice(seq, prob):
+    '''
+    功能：
+        按给定概率prob，从seq中选取元素。可重复k次
+    注意
+        1. seq, prob长度要相等
+        2. prob的概率和要等于1
+        3. k 表示重复选取的次数，默认为1次
+        4. 结果返回list
+        5. 用到了random模块的random()函数
+    例子：
+        >>> random_choice(['a','b','c','d'], [0.4, 0.15, 0.1, 0.35])
+        ['d']
+        >>> random_choice('abcd', [0.4, 0.15, 0.1, 0.35], k=5)
+        ['d','d','b','a','d']
+    '''
+
+    p = random.random()
+    for i in range(len(seq)):
+        if sum(prob[:i]) < p <= sum(prob[:i+1]):
+            return seq[i]
+
+
+
 def random_name():
     last_name = '赵钱孙李周吴郑王冯陈褚卫蒋沈韩杨朱秦尤许何吕施张孔曹严华金魏陶姜戚谢邹喻柏水窦章云苏潘葛' \
            '奚范彭郎鲁韦昌马苗凤花方俞任袁柳酆鲍史唐费廉岑薛雷贺倪汤滕殷罗毕郝邬安常乐于时傅皮卞齐康' \
@@ -39,12 +63,12 @@ def random_name():
     X = random.choice(last_name)
     M = "".join(random.choice(first_name) for i in range(2))
     name = X+M
-    user_type = random.choice(["个人", "商户"])
+    user_type = random_choice(["个人", "商户"], [0.95, 0.05])
     gender = random.choice(["男", "女"])
-    spending = random.choice(range(1,6))
+    spending = random.choice(["1", "2", "3", "4", "5"])
     if user_type == "商户":
-        gender = 0
-        spending = 0
+        gender = "0"
+        spending = "0"
     distinct = random.choice(list(addrs_dict.keys()))
     position = distinct + "." + random.choice(addrs_dict[distinct])
     return user_type, gender, name, spending, position
