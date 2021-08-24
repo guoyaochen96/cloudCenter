@@ -11,13 +11,14 @@ from PyQt6.QtCore import QDir, Qt
 from PyQt6.QtGui import QCursor
 from PyQt6.QtWidgets import QApplication, QWidget, QFileDialog, QPushButton, QGridLayout, QTextEdit, QLineEdit
 from PyQt6 import QtGui
-from presentation import draw_origin, draw_influence, candidate_list
+from presentation import readData
 
 
 class Cloud(QWidget):
     def __init__(self):
         super().__init__()
         self.initUI()
+        self.readdata = readData()
 
     def initUI(self):
         grid = QGridLayout()
@@ -54,7 +55,7 @@ class Cloud(QWidget):
         self.resize(800, 700)
         self.center()
         self.setWindowIcon(QtGui.QIcon("UnionPay.png"))
-        self.setWindowTitle('慧图示例')
+        self.setWindowTitle('慧图demo')
         self.show()
 
     def center(self):
@@ -75,25 +76,27 @@ class Cloud(QWidget):
                 for i in range(len(lines)):
                     line = lines[i].split(",")
                     res += " , ".join(line)
+            self.readdata.read_graph()
             self.textChart.setPlainText(res)
             # update tooltip
             self.inputBtn.setToolTip(self.InputPath)
 
     def get_origin(self):
-        draw_origin()
+        self.readdata.draw_origin()
 
     def get_influence(self):
-        draw_influence()
+        self.readdata.draw_influence()
 
     def get_candidate(self):
         if self.textRes.text():
-            res = candidate_list(self.textRes.text())
+            res = self.readdata.candidate_list(self.textRes.text())
             if res == []:
                 self.textRes.setText("找不到合适的用户！")
             else:
                 self.textRes.setText(",".join(res))
         else:
             self.textRes.setText("请输入正确的查询！")
+
 
 def main():
     app = QApplication(sys.argv)

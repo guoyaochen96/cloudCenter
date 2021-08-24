@@ -27,6 +27,9 @@ def random_choice(seq, prob):
 
 
 def random_name():
+    attributes = ["user_type", "gender", "name", "location", "transaction_type", "transaction_mode",
+                       "Transaction channel", "spending"]
+
     last_name = '赵钱孙李周吴郑王冯陈褚卫蒋沈韩杨朱秦尤许何吕施张孔曹严华金魏陶姜戚谢邹喻柏水窦章云苏潘葛' \
            '奚范彭郎鲁韦昌马苗凤花方俞任袁柳酆鲍史唐费廉岑薛雷贺倪汤滕殷罗毕郝邬安常乐于时傅皮卞齐康' \
            '伍余元卜顾孟平黄和穆萧尹姚邵湛汪祁毛禹狄米贝明臧计伏成戴谈宋茅庞熊纪舒屈项祝董梁杜阮蓝闵' \
@@ -65,13 +68,27 @@ def random_name():
     name = X+M
     user_type = random_choice(["个人", "商户"], [0.95, 0.05])
     gender = random.choice(["男", "女"])
-    spending = random.choice(["1", "2", "3", "4", "5"])
+
     if user_type == "商户":
         gender = "0"
-        spending = "0"
+        name = "超商"
     distinct = random.choice(list(addrs_dict.keys()))
     position = distinct + "." + random.choice(addrs_dict[distinct])
-    return user_type, gender, name, spending, position
+    return user_type, gender, name,  position
+
+
+def random_transaction(user_type):
+    transaction_type = random.choice(["转账", "消费"])
+    transaction_mode = random.choice(["刷脸", "扫码", "POS机"])
+    transaction_channel = random.choice(["云闪付", "支付宝", "微信", "银行卡"])
+    spending = random.randint(100, 501)
+    spending = str(spending)
+    if user_type == "商户":
+        spending = "0"
+        transaction_type = "0"
+        transaction_mode = "0"
+        transaction_channel = "0"
+    return transaction_type, transaction_mode, transaction_channel, spending
 
 
 class User:
